@@ -1,20 +1,4 @@
-Skip to content
-This repository
-Search
-Pull requests
-Issues
-Gist
- @kingko555
- Watch 0
-  Star 0
-  Fork 0 kingko555/ASSembly
- Code  Issues 0  Pull requests 0  Projects 0  Wiki  Pulse  Graphs  Settings
-Branch: master Find file Copy pathASSembly/HW_1.s
-e40d39d  an hour ago
-@kingko555 kingko555 Add files via upload
-1 contributor
-RawBlameHistory     
-98 lines (75 sloc)  1.96 KB
+
 /*
 Calculator 
 Programming Assignment #1
@@ -58,7 +42,7 @@ _add:
 	b main
 
 _sub:
-	sub R4,R3,R4
+	sub R4,R4,R3
 	mov R1,R4
 	ldr R0, =.Lout
 	bl printf
@@ -94,14 +78,14 @@ _getchar:
     	LDR R1, =read_char      @ store the character in data memory
     	SWI 0                   @ execute the system call
     	LDR R0, [R1]            @ move the character to the return register
-    	AND R0, #0xFFFF           @ mask out all but the lowest 8 bits   ( mask using 0xFF= 0000 0000 0000 0000 0000 0000 1111 1111) taking only the last 8 bit
+    	AND R0, #0xFF          @ mask out all but the lowest 8 bits   ( mask using 0xFF= 0000 0000 0000 0000 0000 0000 1111 1111) taking only the last 8 bit
     	MOV PC, LR              @ return
 
 
 _prompt:
 	MOV R7, #4              @ write syscall, 4 (R7 is an operation. 4 iswrite, one of R7 funct).
     	MOV R0, #1              @ output stream to monitor, 1  ( which stream to go to ex. #1).
-    	MOV R2, #23             @ print string length
+    	MOV R2, #11             @ print string length
    	LDR R1, =prompt_str     @ string at label prompt_str: (R1 system call to print)
     	SWI 0                   @ execute syscall
     	MOV PC, LR              @ return (back to main).
@@ -118,7 +102,7 @@ _scanf:
 
 .data 
 
-prompt_str:     .ascii	"Calculator "
+prompt_str:     .ascii	"Calculator:\n "
 read_char:	.ascii	" "
 format_str:	.ascii	"%d"	
 .end 
