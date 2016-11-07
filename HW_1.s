@@ -1,3 +1,20 @@
+Skip to content
+This repository
+Search
+Pull requests
+Issues
+Gist
+ @kingko555
+ Watch 0
+  Star 0
+  Fork 0 kingko555/ASSembly
+ Code  Issues 0  Pull requests 0  Projects 0  Wiki  Pulse  Graphs  Settings
+Branch: master Find file Copy pathASSembly/HW_1.s
+e40d39d  an hour ago
+@kingko555 kingko555 Add files via upload
+1 contributor
+RawBlameHistory     
+98 lines (75 sloc)  1.96 KB
 /*
 Calculator 
 Programming Assignment #1
@@ -10,16 +27,16 @@ Programming Assignment #1
 	.asciz "%d\n"
 
 main:
-	@BL _prompt
+	BL _prompt
 
-    	BL _getchar             @get first number store in R4
-    	MOV R4,[R0]
+    	BL _scanf             @get first number store in R4
+    	MOV R4,R0
 
 	BL _getchar             @get operand store in R5
-    	MOV R5,[R0]
+    	MOV R5,R0
 
-	BL _getchar             @get second number store in R3
-    	MOV R3,[R0]
+	BL _scanf             @get second number store in R3
+    	MOV R3,R0
 
 	CMP R5, #'+'
 	BEQ _add
@@ -81,18 +98,29 @@ _getchar:
     	MOV PC, LR              @ return
 
 
-@_prompt:
-@    	MOV R7, #4              @ write syscall, 4 (R7 is an operation. 4 iswrite, one of R7 funct).
-@    	MOV R0, #1              @ output stream to monitor, 1  ( which stream to go to ex. #1).
-@    	MOV R2, #23             @ print string length
-@   	LDR R1, =prompt_str     @ string at label prompt_str: (R1 system call to print)
-@    	SWI 0                   @ execute syscall
-@    	MOV PC, LR              @ return (back to main).
+_prompt:
+	MOV R7, #4              @ write syscall, 4 (R7 is an operation. 4 iswrite, one of R7 funct).
+    	MOV R0, #1              @ output stream to monitor, 1  ( which stream to go to ex. #1).
+    	MOV R2, #23             @ print string length
+   	LDR R1, =prompt_str     @ string at label prompt_str: (R1 system call to print)
+    	SWI 0                   @ execute syscall
+    	MOV PC, LR              @ return (back to main).
 
-
+_scanf:
+	PUSH {LR}                @ store LR since scanf call overwrites
+    	SUB SP, SP, #4          @ make room on stack
+    	LDR R0, =format_str     @ R0 contains address of format string
+    	MOV R1, SP              @ move SP to R1 to store entry on stack
+    	BL scanf                @ call scanf
+    	LDR R0, [SP]            @ load value at SP into R0
+    	ADD SP, SP, #4          @ restore the stack pointer
+    	POP {PC}                 @ return
 
 .data 
 
-prompt_str:     .ascii      "Calculator "
-
+prompt_str:     .ascii	"Calculator "
+read_char:	.ascii	" "
+format_str:	.ascii	"%d"	
 .end 
+Contact GitHub API Training Shop Blog About
+© 2016 GitHub, Inc. Terms Privacy Security Status Help
