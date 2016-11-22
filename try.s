@@ -7,7 +7,7 @@ Programming Assignment #1
 .func main
 
 .Lout:
-	.asciz "%d mod %d = %d\n"
+	.asciz "The GCD of %d and %d is %d\n"
 
 main:
 	BL _prompt
