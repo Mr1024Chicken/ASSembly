@@ -67,20 +67,24 @@ _scanf:
     	POP {PC}                 @ return
 
 _gcd:
-	push{LR}
-	cmp r5,#0
+	push {LR}
+	@mov R10, LR
 	
-	bneq moding
-	beq end
+	cmp r4,#0
+	
+	BNE moding
+	MOVEQ PC, LR
 	
 	moding:
-		b _mod_unsigned
-		mov R4,R5
-		mov R5,R0
-		b _gcd
-	end:
-		mov R0,R5
-		pop{PC}
+		bl _mod_unsigned
+		sub R4,R4,R0
+		cmp R0,#0
+		movne R5,R0
+		
+		bl _gcd
+	
+	mov R0,R5
+	pop {PC}
 
 .data 
 
