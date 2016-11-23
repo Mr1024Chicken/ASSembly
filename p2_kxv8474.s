@@ -15,15 +15,13 @@ main:
     	BL _scanf             @get first number store in R4
     	MOV R4,R0
 
-	@BL _getchar             @get operand store in R5
-    	@MOV R3,R0
-
 	BL _scanf             @get second number store in R3
     	MOV R5,R0
 	mov R7, R4
 	mov R8, R5
 	
-	BL _mod_unsigned
+	BL _gcd
+
 	mov R3, R0
 	mov R1, R7
 	mov R2, R8
@@ -67,6 +65,22 @@ _scanf:
     	LDR R0, [SP]            @ load value at SP into R0
     	ADD SP, SP, #4          @ restore the stack pointer
     	POP {PC}                 @ return
+
+_gcd:
+	push{LR}
+	cmp r5,#0
+	
+	bneq moding
+	beq end
+	
+	moding:
+		b _mod_unsigned
+		mov R4,R5
+		mov R5,R0
+		b _gcd
+	end:
+		mov R0,R5
+		pop{PC}
 
 .data 
 
