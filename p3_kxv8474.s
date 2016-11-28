@@ -21,7 +21,7 @@ writeloop:
 writedone:
     MOV R0, #0              @ initialze index variable
 readloop:
-    CMP R0, #100            @ check to see if we are done iterating
+    CMP R0, #10             @ check to see if we are done iterating
     BEQ readdone            @ exit loop if done
     LDR R1, =a              @ get address of a
     LSL R2, R0, #2          @ multiply index*4 to get array offset
@@ -62,6 +62,9 @@ _seedrand:
     BL time                 @ get system time
     MOV R1, R0              @ pass sytem time as argument to srand
     BL srand                @ seed the random number generator
+    MOV R4,R0
+    MOV R5,#1000
+    BL _mod_unsigned
     POP {PC}                @ return 
     
 _getrand:
@@ -69,6 +72,24 @@ _getrand:
     BL rand                 @ get a random number
     POP {PC}                @ return 
    
+_mod_unsigned:
+    cmp R5, R4          @ check to see if R1 >= R2
+    MOVHS R0, R4        @ swap R1 and R2 if R2 > R1
+    MOVHS R4, R5        @ swap R1 and R2 if R2 > R1
+    MOVHS R5, R0        @ swap R1 and R2 if R2 > R1
+    MOV R0, #0          @ initialize return value
+    B _modloopcheck     @ check to see if
+    _modloop:
+        ADD R0, R0, #1  @ increment R0
+        SUB R4, R4, R5  @ subtract R2 from R1
+    _modloopcheck:
+        CMP R4, R5      @ check for loop termination
+        BHS _modloop    @ continue loop if R1 >= R2
+    MOV R0, R4          @ move remainder to R0
+    MOV PC, LR          @ return
+
+    
+
 .data
 
 .balign 4
