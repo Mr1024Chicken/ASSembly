@@ -13,6 +13,10 @@ writeloop:
     PUSH {R0}               @ backup iterator before procedure call
     PUSH {R2}               @ backup element address before procedure call
     BL _getrand             @ get a random number
+    MOV R4,R0
+    MOV R5,#1000
+    BL _mod_unsigned
+    
     POP {R2}                @ restore element address
     STR R0, [R2]            @ write the address of a[i] to a[i]
     POP {R0}                @ restore iterator
@@ -62,9 +66,7 @@ _seedrand:
     BL time                 @ get system time
     MOV R1, R0              @ pass sytem time as argument to srand
     BL srand                @ seed the random number generator
-    MOV R4,R0
-    MOV R5,#1000
-    BL _mod_unsigned
+
     POP {PC}                @ return 
     
 _getrand:
