@@ -193,4 +193,5 @@ min:		.ascii	    "min = %d.\n\0"
 max:		.ascii	    "max = %d.\n\0"
 search:		.ascii	    "Enter search value: \0"
 index:		.ascii	    "%d \0"
+format_str:	.ascii	    "%d"	
 .end
