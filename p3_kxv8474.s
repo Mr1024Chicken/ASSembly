@@ -179,7 +179,7 @@ _search_func:
 		mov r1,r6
 		ldr r0,=index
 		bl printf
-		POP {PC}
+		b _search_func
 	
 	
 .data
@@ -193,6 +193,6 @@ exit_str:       .ascii      "Terminating program.\n"
 min:		.ascii	    "min = %d.\n\0"
 max:		.ascii	    "max = %d.\n\0"
 search:		.ascii	    "Enter search value: \0"
-index:		.ascii	    "%d \0"
+index:		.asciz	    "index : %d \n"
 format_str:	.ascii	    "%d"	
 .end
