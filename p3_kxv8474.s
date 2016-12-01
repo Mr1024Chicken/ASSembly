@@ -144,6 +144,16 @@ _min:
     		ldr r0,=min
     		bl printf
 		pop {PC}	
+
+_scanf:
+	PUSH {LR}                @ store LR since scanf call overwrites
+    	SUB SP, SP, #4          @ make room on stack
+    	LDR R0, =format_str     @ R0 contains address of format string
+    	MOV R1, SP              @ move SP to R1 to store entry on stack
+    	BL scanf                @ call scanf
+    	LDR R0, [SP]            @ load value at SP into R0
+    	ADD SP, SP, #4          @ restore the stack pointer
+    	POP {PC}                 @ return
 	
 .data
 
@@ -153,6 +163,6 @@ printf_str:     .asciz      "a[%d] = %d\n"
 debug_str:
 .asciz "R%-2d   0x%08X  %011d \n"
 exit_str:       .ascii      "Terminating program.\n"
-min:		.ascii	    "min = %d.\n\0/0"
+min:		.ascii	    "min = %d.\n\0"
 max:		.asciz	    "max = %d.\n"
 .end
