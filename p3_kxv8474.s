@@ -161,6 +161,7 @@ _search_func:
 	bl _scanf
 	mov r4,r0
 	mov r6,#-1
+	mov r0,#0
 	look:
 		cmp r0,#10
 		beq finish
@@ -178,7 +179,7 @@ _search_func:
 		mov r1,r6
 		ldr r0,=index
 		bl printf
-		POP{PC}
+		POP {PC}
 	
 	
 .data
