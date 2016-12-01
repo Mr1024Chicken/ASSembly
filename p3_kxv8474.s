@@ -48,7 +48,7 @@ readdone:
     bl _max
 
     bl _min
-
+    bl _search_func
     B _exit                 @ exit if done
     
 _exit:  
@@ -154,6 +154,32 @@ _scanf:
     	LDR R0, [SP]            @ load value at SP into R0
     	ADD SP, SP, #4          @ restore the stack pointer
     	POP {PC}                 @ return
+_search_func:
+	push {LR}
+	ldr r0, =search
+	bl printf
+	bl _scanf
+	mov r4,r0
+	mov r6,#-1
+	look:
+		cmp r0,#10
+		beq finish
+		ldr r1,=a
+		lsl r2,r0,#2
+    		add r2,r1,r2
+		ldr r1,[r2]
+		mov r5,r1
+		cmp r4,r5
+		moveq r6,r0
+		beq finish
+		add r0,#1
+		b look
+	finish:
+		mov r1,r6
+		ldr r0,=index
+		bl printf
+		POP{PC}
+	
 	
 .data
 
@@ -164,5 +190,7 @@ debug_str:
 .asciz "R%-2d   0x%08X  %011d \n"
 exit_str:       .ascii      "Terminating program.\n"
 min:		.ascii	    "min = %d.\n\0"
-max:		.asciz	    "max = %d.\n"
+max:		.ascii	    "max = %d.\n\0"
+search:		.ascii	    "Enter search value: \0"
+index:		.ascii	    "%d \0"
 .end
