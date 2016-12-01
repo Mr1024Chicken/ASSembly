@@ -1,6 +1,8 @@
 .global main
 .func main
-   
+  
+.min:
+	.ascii	"min = %d"
 main:
     BL _seedrand            @ seed random number generator with current time
     MOV R0, #0              @ initialze index variable
@@ -43,6 +45,10 @@ readloop:
     ADD R0, R0, #1          @ increment index
     B   readloop            @ branch to next loop iteration
 readdone:
+    bl _max
+
+    bl _min
+
     B _exit                 @ exit if done
     
 _exit:  
@@ -89,9 +95,56 @@ _mod_unsigned:
         BHS _modloop    @ continue loop if R1 >= R2
     MOV R0, R4          @ move remainder to R0
     MOV PC, LR          @ return
+_max:
+	push {LR}
+	mov r0,#0
+	mov r2,#0
+	ldr r1,=a
+	ldr r1,[r1]
+	mov r4,r1
+	_compare_greater:
+		cmp r0,#10
+		beq done
+		ldr r1,=a
+		lsl r2,r0,#2
+    		add r2,r1,r2
+		ldr r1,[r2]
+		mov r5,r1
+		cmp r5,r4
+		movhs r4,r5
+		add r0,#1
+		b _compare_greater
+	done:
+		mov r1,r4
+		ldr r0,=max
+    		bl printf
+		pop {PC}
+_min:
+		push {LR}
+	mov r0,#0
+	mov r2,#0
+	ldr r1,=a
+	ldr r1,[r1]
+	mov r4,r1
+	_compare_less:
+		cmp r0,#10
+		beq ok
+		ldr r1,=a
+		lsl r2,r0,#2
+    		add r2,r1,r2
+		ldr r1,[r2]
+		mov r5,r1
+		cmp r4,r5
+		movhs r4,r5
+		add r0,#1
+		b _compare_less
+	ok:
 
-    
-
+		mov r1,r4
+    		ldr r0,=min
+    		bl printf
+		pop {PC}	
+	
 .data
 
 .balign 4
@@ -100,3 +153,6 @@ printf_str:     .asciz      "a[%d] = %d\n"
 debug_str:
 .asciz "R%-2d   0x%08X  %011d \n"
 exit_str:       .ascii      "Terminating program.\n"
+min:		.ascii	    "min = %d.\n\0/0"
+max:		.asciz	    "max = %d.\n"
+.end
