@@ -3,12 +3,16 @@
 
 main:
 	BL _scanf
-	MOV R1,R0
+	MOV R3,R0
+
 	BL _getchar 
 	MOV R2,R0
-	CMP R1, #0
+
+	CMP R3, #0
 	BLT _ABS
 
+	#MOV R1,R0
+	MOV R1, R3
 	LDR R0, =awr
 	BL printf
 	B main
@@ -33,8 +37,8 @@ _scanf:
     	ADD SP, SP, #4          @ restore the stack pointer
     	POP {PC}                 @ return
 _ABS:
-	
-	MULT R1, #-1
+	MOV R1, #-1
+	MUL R3, R3, R1
 	MOV PC,LR
 
 
@@ -43,5 +47,5 @@ _ABS:
 prompt_str:     .ascii	"Calculator:\n "
 read_char:	.ascii	" "
 format_str:	.ascii	"%d"
-awr:		.asciz	"Answer is %d\n"	
+awr:		.asciz	"Answer is %d \n"	
 .end 
