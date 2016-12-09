@@ -3,7 +3,7 @@
 
 main:
 	BL _scanf
-	MOV R3,R0
+	VMOV S0,R0
 
 	BL _getchar 
 	MOV R2,R0
@@ -36,11 +36,10 @@ _scanf:
     	ADD SP, SP, #4          @ restore the stack pointer
     	POP {PC}                 @ return
 _ABS:
-	CMP R3, #0
-	BLT _less
+	VABS.F64.F32 D1,S0
+	VMOV R1,R2,D1
 	
-	#MOV R1,R0
-	MOV R1, R3
+	
 	LDR R0, =awr
 	BL printf
 	B main
