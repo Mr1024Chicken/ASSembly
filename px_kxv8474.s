@@ -55,6 +55,6 @@ _ABS:
 
 prompt_str:     .ascii	"Calculator:\n "
 read_char:	.ascii	" "
-format_str:	.ascii	"%d"
+format_str:	.ascii	"%f"
 awr:		.asciz	"Answer is %f \n"	
 .end 
