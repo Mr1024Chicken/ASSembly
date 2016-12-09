@@ -8,14 +8,13 @@ main:
 	BL _getchar 
 	MOV R2,R0
 
-	CMP R3, #0
-	BLT _ABS
+	CMP R2, #'a'
+	BEQ _ABS
+	CMP R2, #'p'
+	CMP R2, #'i'
+	CMP R2, #'s'
+	
 
-	#MOV R1,R0
-	MOV R1, R3
-	LDR R0, =awr
-	BL printf
-	B main
 
 _getchar:
     	MOV R7, #3              @ write syscall, 3 (3 is getting something).
@@ -37,9 +36,18 @@ _scanf:
     	ADD SP, SP, #4          @ restore the stack pointer
     	POP {PC}                 @ return
 _ABS:
-	MOV R1, #-1
-	MUL R3, R3, R1
-	MOV PC,LR
+	CMP R3, #0
+	BLT _less
+	
+	#MOV R1,R0
+	MOV R1, R3
+	LDR R0, =awr
+	BL printf
+
+		_less:
+			MOV R1, #-1
+			MUL R3, R3, R1
+			MOV PC,LR
 
 
 .data 
