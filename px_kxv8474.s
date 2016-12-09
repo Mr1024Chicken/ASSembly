@@ -43,6 +43,7 @@ _ABS:
 	MOV R1, R3
 	LDR R0, =awr
 	BL printf
+	B main
 
 		_less:
 			MOV R1, #-1
