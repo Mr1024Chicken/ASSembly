@@ -20,6 +20,9 @@ main:
 	CMP R2,#'s'
 	BEQ _SQRT
 
+	CMP R2, #'i'
+	BEQ _INV
+
 	B   _exit              
    
 _ABS: 
@@ -49,6 +52,16 @@ _POW:
 _SQRT:
 	VSQRT.F32 S0,S0	
     	VCVT.F64.F32 D1, S0     
+  	VMOV R1, R2, D1         
+   	BL  _printf              
+	B main
+_INV:
+	 MOV R1,#1
+	VMOV S2,R1
+	VCVT.F32.U32 S2,S2
+	VDIV.F32 S0, S2, S0
+
+	VCVT.F64.F32 D1, S0     
   	VMOV R1, R2, D1         
    	BL  _printf              
 	B main
